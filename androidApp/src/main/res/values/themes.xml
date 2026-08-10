@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Compose draws the whole UI, so the platform theme only needs to hand over a bare, edge-to-edge
+      window. A translucent background here would show through during the launch frame.
+    -->
+    <style name="Theme.Todo" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- Resolves light or dark automatically, so the launch frame matches the app. -->
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+    </style>
+</resources>
