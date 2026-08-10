@@ -14,18 +14,21 @@ dependencies {
     implementation(project(":shared"))
 
     implementation(libs.androidx.activity.compose)
+    // MainActivity bridges the permission callback back to shared code with a CompletableDeferred.
+    implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)
 }
 
 android {
-    namespace = "com.example.test2todoapp"
+    namespace = "com.toufikforyou.mytodoapp"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.example.test2todoapp"
+        applicationId = "com.toufikforyou.mytodoapp"
         minSdk = libs.versions.android.minSdk.get().toInt()
+        //noinspection OldTargetApi
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
