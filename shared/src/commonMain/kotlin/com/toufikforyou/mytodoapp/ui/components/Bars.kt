@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.toufikforyou.mytodoapp.domain.model.Category
 import com.toufikforyou.mytodoapp.domain.model.TodoFilter
 import com.toufikforyou.mytodoapp.ui.icons.AppIcons
+import com.toufikforyou.mytodoapp.ui.theme.Accents
 
 /** Rounded, filled search field that reads as a pill rather than a form input. */
 @Composable
@@ -56,9 +57,10 @@ fun SearchBar(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(),
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            focusedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f),
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
             disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
             // The pill shape carries the affordance; an underline would fight it.
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
@@ -82,13 +84,14 @@ fun FilterChipRow(
         contentPadding = contentPadding,
     ) {
         items(TodoFilter.entries.toList(), key = { it.name }) { filter ->
-            val isOverdueChip = filter == TodoFilter.OVERDUE
+            val accent = Accents.of(filter)
+            val isSelected = filter == selected
             FilterChip(
-                selected = filter == selected,
+                selected = isSelected,
                 onClick = { onSelect(filter) },
                 label = {
                     Text(
-                        if (isOverdueChip && overdueCount > 0) {
+                        if (filter == TodoFilter.OVERDUE && overdueCount > 0) {
                             "${filter.label} · $overdueCount"
                         } else {
                             filter.label
@@ -96,15 +99,14 @@ fun FilterChipRow(
                     )
                 },
                 shape = CircleShape,
-                colors = if (isOverdueChip && overdueCount > 0) {
-                    FilterChipDefaults.filterChipColors(
-                        labelColor = MaterialTheme.colorScheme.error,
-                        selectedContainerColor = MaterialTheme.colorScheme.errorContainer,
-                        selectedLabelColor = MaterialTheme.colorScheme.onErrorContainer,
-                    )
-                } else {
-                    FilterChipDefaults.filterChipColors()
-                },
+                // Every filter carries its own accent: tinted when idle, solid when chosen.
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = accent.copy(alpha = 0.12f),
+                    labelColor = accent,
+                    selectedContainerColor = accent,
+                    selectedLabelColor = Color.White,
+                ),
+                border = null,
             )
         }
     }
@@ -126,21 +128,40 @@ fun CategoryChipRow(
         contentPadding = contentPadding,
     ) {
         item(key = "all") {
+            val accent = MaterialTheme.colorScheme.primary
             FilterChip(
                 selected = selectedId == null,
                 onClick = { onSelect(null) },
                 label = { Text("All lists") },
                 shape = CircleShape,
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = accent.copy(alpha = 0.12f),
+                    labelColor = accent,
+                    selectedContainerColor = accent,
+                    selectedLabelColor = Color.White,
+                ),
+                border = null,
             )
         }
         items(categories, key = { it.id }) { category ->
+            val accent = Color(category.colorArgb)
+            val isSelected = selectedId == category.id
             FilterChip(
-                selected = selectedId == category.id,
-                onClick = { onSelect(if (selectedId == category.id) null else category.id) },
+                selected = isSelected,
+                onClick = { onSelect(if (isSelected) null else category.id) },
                 label = { Text(category.name) },
                 shape = CircleShape,
-                leadingIcon = {
-                    ColorDot(Color(category.colorArgb))
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = accent.copy(alpha = 0.12f),
+                    labelColor = accent,
+                    selectedContainerColor = accent,
+                    selectedLabelColor = Color.White,
+                ),
+                border = null,
+                leadingIcon = if (!isSelected) {
+                    { ColorDot(accent) }
+                } else {
+                    null
                 },
             )
         }

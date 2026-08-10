@@ -46,12 +46,14 @@ import com.toufikforyou.mytodoapp.domain.model.SortOrder
 import com.toufikforyou.mytodoapp.domain.model.Todo
 import com.toufikforyou.mytodoapp.domain.model.TodoFilter
 import com.toufikforyou.mytodoapp.ui.components.CategoryChipRow
+import com.toufikforyou.mytodoapp.ui.components.ColorDot
 import com.toufikforyou.mytodoapp.ui.components.EmptyState
 import com.toufikforyou.mytodoapp.ui.components.FilterChipRow
 import com.toufikforyou.mytodoapp.ui.components.ProgressHeader
 import com.toufikforyou.mytodoapp.ui.components.SearchBar
 import com.toufikforyou.mytodoapp.ui.components.TaskRow
 import com.toufikforyou.mytodoapp.ui.icons.AppIcons
+import com.toufikforyou.mytodoapp.ui.theme.Accents
 import com.toufikforyou.mytodoapp.ui.theme.SectionHeaderStyle
 import kotlin.time.Instant
 
@@ -253,26 +255,25 @@ private fun TaskListTopBar(
 
 @Composable
 private fun SectionHeader(title: String, count: Int, modifier: Modifier = Modifier) {
+    // Each bucket gets its own accent, so scanning the list is a matter of colour not reading.
+    val accent = Accents.ofSection(title)
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        ColorDot(accent, size = 8.dp)
         Text(
             text = title.uppercase(),
             style = SectionHeaderStyle,
-            color = if (title == "Overdue") {
-                MaterialTheme.colorScheme.error
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            },
+            color = accent,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = count.toString(),
             style = SectionHeaderStyle,
-            color = MaterialTheme.colorScheme.outline,
+            color = accent.copy(alpha = 0.6f),
         )
     }
 }

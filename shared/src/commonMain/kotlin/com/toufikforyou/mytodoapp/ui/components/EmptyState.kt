@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.toufikforyou.mytodoapp.ui.theme.brandGradient
 
 /** Shown when a filter, a search or a brand new install leaves the list with nothing to draw. */
 @Composable
@@ -33,17 +34,20 @@ fun EmptyState(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        // A gradient badge keeps an empty screen feeling designed rather than broken.
         Box(
             modifier = Modifier
-                .size(84.dp)
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh, CircleShape),
+                .size(96.dp)
+                .background(brandGradient(), CircleShape)
+                .padding(4.dp)
+                .background(MaterialTheme.colorScheme.surface, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(38.dp),
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(40.dp),
             )
         }
         Text(

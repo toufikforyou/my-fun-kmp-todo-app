@@ -51,7 +51,7 @@ import com.toufikforyou.mytodoapp.domain.DateTimes
 import com.toufikforyou.mytodoapp.domain.model.Priority
 import com.toufikforyou.mytodoapp.ui.components.ColorDot
 import com.toufikforyou.mytodoapp.ui.icons.AppIcons
-import com.toufikforyou.mytodoapp.ui.theme.PriorityColors
+import com.toufikforyou.mytodoapp.ui.theme.Accents
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlin.time.Clock
@@ -139,7 +139,7 @@ fun TaskEditorScreen(
                             label = { Text(priority.label) },
                             shape = CircleShape,
                             leadingIcon = if (priority != Priority.NONE) {
-                                { ColorDot(PriorityColors.accent(priority), size = 10.dp) }
+                                { ColorDot(Accents.of(priority), size = 10.dp) }
                             } else {
                                 null
                             },

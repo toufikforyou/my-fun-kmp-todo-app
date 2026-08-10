@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import com.toufikforyou.mytodoapp.ui.theme.AppMotion
+import com.toufikforyou.mytodoapp.ui.theme.brandGradient
 
 /**
  * The greeting block at the top of the list: a plain-language summary of what is left, with a ring
@@ -82,11 +83,12 @@ fun ProgressHeader(
 @Composable
 private fun ProgressRing(progress: Float, label: String) {
     val track = MaterialTheme.colorScheme.surfaceContainerHighest
-    val indicator = MaterialTheme.colorScheme.primary
+    // A sweep gradient makes the ring the most colorful thing on the screen.
+    val indicator = brandGradient()
 
     Box(contentAlignment = Alignment.Center) {
-        Canvas(Modifier.size(64.dp)) {
-            val stroke = Stroke(width = 8.dp.toPx(), cap = StrokeCap.Round)
+        Canvas(Modifier.size(72.dp)) {
+            val stroke = Stroke(width = 9.dp.toPx(), cap = StrokeCap.Round)
             val inset = stroke.width / 2
             val arcSize = Size(
                 width = size.width - stroke.width,
@@ -104,7 +106,7 @@ private fun ProgressRing(progress: Float, label: String) {
             )
             if (progress > 0f) {
                 drawArc(
-                    color = indicator,
+                    brush = indicator,
                     // Start at 12 o'clock and fill clockwise.
                     startAngle = -90f,
                     sweepAngle = 360f * progress.coerceIn(0f, 1f),
@@ -117,8 +119,8 @@ private fun ProgressRing(progress: Float, label: String) {
         }
         Text(
             text = label,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
